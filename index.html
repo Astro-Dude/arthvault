@@ -15,10 +15,16 @@
             <button class="btn btn-outline" id="loginBtn">Login</button>
             <button class="btn btn-primary" id="signupBtn">Sign Up</button>
         </div>
+        <div class="profile-menu hidden" id="profileMenu">
+            <img src="images/default-avatar.png" id="profilePic" alt="Profile" class="profile-pic">
+            <div class="dropdown hidden" id="profileDropdown">
+                <p id="userEmail">User</p>
+                <button id="logoutBtn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
     </nav>
 
     <main class="main-content">
-        <!-- Updated summary section -->
         <div class="summary-section">
             <div class="summary-card">
                 <div class="summary-icon income-icon">💰</div>
@@ -89,7 +95,6 @@
             <div class="card">
                 <h2>Expense Categories</h2>
                 <div class="chart-container" id="categoryPieChart">
-                    <!-- Pie chart will be added here using JavaScript -->
                 </div>
                 <div id="chartLegend"></div>
             </div>
@@ -97,7 +102,6 @@
             <div class="card full-width">
                 <h2>Monthly Overview</h2>
                 <div class="chart-container" id="monthlyChart">
-                    <!-- Monthly chart will be added here using JavaScript -->
                 </div>
             </div>
         </div>
@@ -106,7 +110,6 @@
             Ask AI Assistant
         </button>
 
-        <!-- Add this just before closing body tag -->
         <div class="popup-overlay" id="aiPopup">
             <div class="popup-content">
                 <div class="popup-header">
@@ -116,7 +119,6 @@
                 <div class="popup-body">
                     <div class="chat-container">
                         <div class="chat-messages" id="chatMessages">
-                            <!-- Messages will be added here -->
                         </div>
                         <div class="chat-input">
                             <textarea id="userInput" placeholder="Ask me about your expenses..." rows="3"></textarea>
@@ -128,7 +130,7 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 
 </html>
