@@ -66,7 +66,7 @@ onAuthStateChanged(auth, async (user) => {
 
     const income = await getUserIncome(user.uid);
     console.log("User income:", income);
-    totalIncomeDisplay.textContent = income;
+    totalIncomeDisplay.textContent = "₹" + income.toLocaleString("en-IN");
   } else {
     console.log("User is signed out");
     authbtn.classList.remove("hidden");
@@ -108,6 +108,12 @@ saveIncomeBtn.addEventListener("click", async (e) => {
 
 login.addEventListener("click", userSignIn);
 register.addEventListener("click", userSignIn);
+
+
+
+
+
+// ArthGPT API integration
 
 document.addEventListener("DOMContentLoaded", function () {
   const aiButton = document.getElementById("aiAssistant");
@@ -163,6 +169,8 @@ document.addEventListener("DOMContentLoaded", function () {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 });
+
+// Income popup integration
 
 document.addEventListener("DOMContentLoaded", function () {
   const editIncomeBtn = document.getElementById("editIncomeBtn");

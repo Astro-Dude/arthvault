@@ -28,7 +28,7 @@ async function initializeUserData(user) {
     if (!userDoc.exists()) {
       await setDoc(userRef, {
         email: user.email,
-        income: 50000,
+        income: 0,
       });
       console.log("New user profile created with income: 50000");
     } else {
