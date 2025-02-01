@@ -69,9 +69,9 @@ onAuthStateChanged(auth, async (user) => {
     totalIncomeDisplay.textContent = "₹" + income.toLocaleString("en-IN");
   } else {
     console.log("User is signed out");
-    authbtn.classList.remove("hidden");
+    authbtn.classList.remove("hidden");``
     profileMenu.classList.add("hidden");
-    incomeAmount.textContent = "";
+    totalIncomeDisplay.textContent = "₹0";
   }
 });
 
