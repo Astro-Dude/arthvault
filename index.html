@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArthVault - Smart Expense Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"><img id='logo' src="images/logo_light.png" alt="ArthVault"></div>
+        <div class="auth-buttons">
+            <button class="btn btn-outline" id="loginBtn">Login</button>
+            <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Updated summary section -->
+        <div class="summary-section">
+            <div class="summary-card">
+                <div class="summary-icon income-icon">💰</div>
+                <div class="summary-info">
+                    <div class="summary-header">
+                        <h3>Total Income</h3>
+                        <button class="edit-btn" id="editIncomeBtn">✏️</button>
+                    </div>
+                    <p class="summary-amount" id="totalIncome">₹50,000</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon expense-icon">💸</div>
+                <div class="summary-info">
+                    <h3>Monthly Expenses</h3>
+                    <p class="summary-amount" id="totalExpense">₹32,450</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-overlay" id="incomePopup">
+            <div class="popup-content income-popup">
+                <div class="popup-header">
+                    <h2>Edit Monthly Income</h2>
+                    <button class="close-popup" id="closeIncomePopup">&times;</button>
+                </div>
+                <div class="popup-body">
+                    <form id="incomeForm">
+                        <div class="form-group">
+                            <label for="incomeAmount">Monthly Income</label>
+                            <div class="input-with-symbol">
+                                <span class="currency-symbol">₹</span>
+                                <input type="number" id="incomeAmount" placeholder="Enter your monthly income">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Income</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard">
+            <div class="card">
+                <h2>Add Expense</h2>
+                <form class="expense-form">
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category">
+                            <option value="">Select category</option>
+                            <option value="food">Food</option>
+                            <option value="transport">Transport</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="other">other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input id="description" placeholder="Enter description"></input>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Expense Categories</h2>
+                <div class="chart-container" id="categoryPieChart">
+                    <!-- Pie chart will be added here using JavaScript -->
+                </div>
+                <div id="chartLegend"></div>
+            </div>
+
+            <div class="card full-width">
+                <h2>Monthly Overview</h2>
+                <div class="chart-container" id="monthlyChart">
+                    <!-- Monthly chart will be added here using JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary ai-assistant" id="aiAssistant">
+            Ask AI Assistant
+        </button>
+
+        <!-- Add this just before closing body tag -->
+        <div class="popup-overlay" id="aiPopup">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h2>AI Assistant</h2>
+                    <button class="close-popup">&times;</button>
+                </div>
+                <div class="popup-body">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be added here -->
+                        </div>
+                        <div class="chat-input">
+                            <textarea id="userInput" placeholder="Ask me about your expenses..." rows="3"></textarea>
+                            <button class="btn btn-primary send-message">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
