@@ -1,5 +1,3 @@
-// Add this to your existing JavaScript or create a new script tag
-
 document.addEventListener('DOMContentLoaded', function() {
     const aiButton = document.getElementById('aiAssistant');
     const popup = document.getElementById('aiPopup');
@@ -8,24 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const userInput = document.getElementById('userInput');
     const chatMessages = document.getElementById('chatMessages');
 
-    // Open popup
     aiButton.addEventListener('click', () => {
         popup.classList.add('active');
     });
 
-    // Close popup
     closeButton.addEventListener('click', () => {
         popup.classList.remove('active');
     });
 
-    // Close popup when clicking outside
     popup.addEventListener('click', (e) => {
         if (e.target === popup) {
             popup.classList.remove('active');
         }
     });
 
-    // Send message
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -59,8 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Add this to your JavaScript file
-
 document.addEventListener('DOMContentLoaded', function() {
     const editIncomeBtn = document.getElementById('editIncomeBtn');
     const incomePopup = document.getElementById('incomePopup');
@@ -69,9 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const incomeAmount = document.getElementById('incomeAmount');
     const totalIncomeDisplay = document.getElementById('totalIncome');
 
-    // Open income popup
     editIncomeBtn.addEventListener('click', () => {
-        // Get current income without the currency symbol and commas
         const currentIncome = totalIncomeDisplay.textContent
             .replace('₹', '')
             .replace(/,/g, '');
@@ -79,19 +69,16 @@ document.addEventListener('DOMContentLoaded', function() {
         incomePopup.classList.add('active');
     });
 
-    // Close income popup
     closeIncomePopup.addEventListener('click', () => {
         incomePopup.classList.remove('active');
     });
 
-    // Close on outside click
     incomePopup.addEventListener('click', (e) => {
         if (e.target === incomePopup) {
             incomePopup.classList.remove('active');
         }
     });
-
-    // Handle income form submission
+    
     incomeForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const newIncome = parseFloat(incomeAmount.value);
