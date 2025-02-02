@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <!-- Basic meta tags for proper rendering and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArthVault - Smart Expense Management</title>
@@ -9,12 +9,19 @@
 </head>
 
 <body>
+    <!-- Navigation Bar Section -->
+    <!-- Contains logo, authentication buttons, and user profile menu -->
     <nav class="navbar">
+        <!-- Company logo -->
         <div class="logo"><img id='logo' src="images/logo_light.png" alt="ArthVault"></div>
+        
+        <!-- Authentication buttons (shown when user is not logged in) -->
         <div class="auth-buttons">
             <button class="btn btn-outline" id="loginBtn">Login</button>
             <button class="btn btn-primary" id="signupBtn">Sign Up</button>
         </div>
+        
+        <!-- Profile menu (shown when user is logged in) -->
         <div class="profile-menu hidden" id="profileMenu">
             <img src="images/default-avatar.png" id="profilePic" alt="Profile" class="profile-pic">
             <div class="dropdown hidden" id="profileDropdown">
@@ -24,8 +31,12 @@
         </div>
     </nav>
 
+    <!-- Main Content Section -->
     <main class="main-content">
+        <!-- Financial Summary Section -->
+        <!-- Displays total income and monthly expenses -->
         <div class="summary-section">
+            <!-- Income Summary Card -->
             <div class="summary-card">
                 <div class="summary-icon income-icon">💰</div>
                 <div class="summary-info">
@@ -36,6 +47,8 @@
                     <p class="summary-amount" id="totalIncome">₹0</p>
                 </div>
             </div>
+            
+            <!-- Expense Summary Card -->
             <div class="summary-card">
                 <div class="summary-icon expense-icon">💸</div>
                 <div class="summary-info">
@@ -45,6 +58,8 @@
             </div>
         </div>
 
+        <!-- Income Edit Popup -->
+        <!-- Modal for editing monthly income -->
         <div class="popup-overlay" id="incomePopup">
             <div class="popup-content income-popup">
                 <div class="popup-header">
@@ -66,7 +81,10 @@
             </div>
         </div>
 
+        <!-- Dashboard Section -->
+        <!-- Contains expense form and category chart -->
         <div class="dashboard">
+            <!-- Expense Input Form -->
             <div class="card">
                 <h2>Add Expense</h2>
                 <form class="expense-form">
@@ -87,38 +105,44 @@
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <input id="description" placeholder="Enter description"></input>
+                        <input id="description" placeholder="Enter description">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Expense</button>
                 </form>
             </div>
 
+            <!-- Expense Categories Pie Chart -->
             <div class="card">
                 <h2>Expense Categories</h2>
-                <div class="chart-container" id="categoryPieChart">
-                </div>
+                <div class="chart-container" id="categoryPieChart"></div>
                 <div id="chartLegend"></div>
             </div>
         </div>
 
+        <!-- Month and Year Selector -->
+        <!-- Dropdown for filtering expenses by month and year -->
         <div class="month-selector">
-            <select id="monthSelect" class="month-dropdown">
-            </select>
-            <select id="yearSelect" class="year-dropdown">
-            </select>
+            <select id="monthSelect" class="month-dropdown"></select>
+            <select id="yearSelect" class="year-dropdown"></select>
         </div>
 
+        <!-- Expense List Section -->
+        <!-- Displays all expenses in a list format -->
         <div class="card full-width">
             <h2>Monthly Expenses</h2>
             <div id="expenseList" class="expense-list">
-                <!-- Expenses will be displayed here -->
+                <!-- Dynamic content: Expenses will be populated here via JavaScript -->
             </div>
         </div>
 
+        <!-- AI Assistant Feature -->
+        <!-- Button to trigger AI chat assistant -->
         <button class="btn btn-primary ai-assistant" id="aiAssistant">
             Ask AI Assistant
         </button>
 
+        <!-- AI Assistant Chat Popup -->
+        <!-- Modal for AI chat interface -->
         <div class="popup-overlay" id="aiPopup">
             <div class="popup-content">
                 <div class="popup-header">
@@ -128,6 +152,7 @@
                 <div class="popup-body">
                     <div class="chat-container">
                         <div class="chat-messages" id="chatMessages">
+                            <!-- Dynamic content: Chat messages will be populated here -->
                         </div>
                         <div class="chat-input">
                             <textarea id="userInput" placeholder="Ask me about your expenses..." rows="3"></textarea>
@@ -138,8 +163,8 @@
             </div>
         </div>
     </main>
-
+    
+    <!-- Main JavaScript file -->
     <script src="script.js" type="module"></script>
 </body>
-
 </html>

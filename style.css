@@ -1,3 +1,5 @@
+/* CSS Variables
+----------------------------------------*/
 :root {
     --primary-color: #2563eb;
     --secondary-color: #1e40af;
@@ -6,6 +8,8 @@
     --card-background: #ffffff;
 }
 
+/* Base Styles
+----------------------------------------*/
 * {
     margin: 0;
     padding: 0;
@@ -18,6 +22,8 @@ body {
     color: var(--text-color);
 }
 
+/* Navigation Bar
+----------------------------------------*/
 .navbar {
     background-color: var(--card-background);
     padding: 1rem 2rem;
@@ -36,6 +42,8 @@ body {
     gap: 1rem;
 }
 
+/* Button Styles
+----------------------------------------*/
 .btn {
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
@@ -55,6 +63,8 @@ body {
     background-color: transparent;
 }
 
+/* Profile Menu
+----------------------------------------*/
 .profile-menu {
     position: relative;
     display: flex;
@@ -104,17 +114,16 @@ body {
     background: #b91c1c;
 }
 
-.hidden {
-    display: none;
-}
-
-
+/* Main Content
+----------------------------------------*/
 .main-content {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
+/* Summary Section
+----------------------------------------*/
 .summary-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -152,6 +161,8 @@ body {
     color: #dc2626;
 }
 
+/* Summary Info
+----------------------------------------*/
 .summary-info {
     flex-grow: 1;
 }
@@ -169,14 +180,14 @@ body {
     margin: 0;
 }
 
-/* Add these new styles to your style.css */
-
 .summary-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+/* Income Edit
+----------------------------------------*/
 .edit-btn {
     background: none;
     border: none;
@@ -195,14 +206,16 @@ body {
     max-width: 400px !important;
 }
 
+/* Form Styles
+----------------------------------------*/
 .popup-body {
-    padding: 1.5rem;  /* Increased padding */
+    padding: 1.5rem;
 }
 
 #incomeForm {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;  /* Increased gap between elements */
+    gap: 1.5rem;
 }
 
 .form-group {
@@ -228,24 +241,14 @@ body {
     width: 100%;
 }
 
-/* Styles for the income input */
 #incomeAmount {
     font-size: 1.1rem;
     padding: 0.75rem;
     padding-left: 2rem;
 }
 
-/* New styles for button alignment */
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
-}
-
-.form-actions .btn {
-    min-width: 100px;  /* Ensure consistent button width */
-}
-
+/* Month Selector
+----------------------------------------*/
 .month-selector {
     margin-top: 2rem;
     display: flex;
@@ -260,6 +263,8 @@ body {
     min-width: 150px;
 }
 
+/* Expense List
+----------------------------------------*/
 .expense-list {
     margin-top: 1rem;
 }
@@ -292,12 +297,8 @@ body {
     font-size: 0.875rem;
 }
 
-@media (max-width: 768px) {
-    .summary-section {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* Dashboard Layout
+----------------------------------------*/
 .dashboard {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -305,7 +306,6 @@ body {
     margin-top: 2rem;
 }
 
-/* New styles for full-width monthly overview */
 .card.full-width {
     grid-column: 1 / -1;
     margin-top: 1.5rem;
@@ -324,12 +324,8 @@ body {
     gap: 1rem;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
+/* Form Elements
+----------------------------------------*/
 input, select, textarea {
     padding: 0.5rem;
     border: 1px solid #d1d5db;
@@ -344,12 +340,16 @@ input, select, textarea {
     align-items: center;
 }
 
+/* AI Assistant
+----------------------------------------*/
 .ai-assistant {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
 }
 
+/* Popup Styles
+----------------------------------------*/
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -404,11 +404,8 @@ input, select, textarea {
     color: #333;
 }
 
-.popup-body {
-    padding: 1rem;
-    overflow-y: auto;
-}
-
+/* Chat Styles
+----------------------------------------*/
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -454,6 +451,14 @@ input, select, textarea {
     align-self: flex-start;
 }
 
+/* Utility Classes
+----------------------------------------*/
+.hidden {
+    display: none;
+}
+
+/* Responsive Design
+----------------------------------------*/
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -465,5 +470,9 @@ input, select, textarea {
     
     .card.full-width {
         grid-column: 1;
+    }
+    
+    .summary-section {
+        grid-template-columns: 1fr;
     }
 }
