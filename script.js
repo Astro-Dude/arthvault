@@ -227,6 +227,19 @@ document.addEventListener('DOMContentLoaded', function() {
   const monthSelect = document.getElementById('monthSelect');
   const yearSelect = document.getElementById('yearSelect');
   
+  // Initialize month dropdown
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  months.forEach((month, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = month;
+    monthSelect.appendChild(option);
+  });
+
   // Initialize year dropdown
   const currentYear = new Date().getFullYear();
   for (let year = currentYear; year >= currentYear - 5; year--) {
