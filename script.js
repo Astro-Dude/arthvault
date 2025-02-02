@@ -109,10 +109,6 @@ saveIncomeBtn.addEventListener("click", async (e) => {
 login.addEventListener("click", userSignIn);
 register.addEventListener("click", userSignIn);
 
-
-
-
-
 // ArthGPT API integration
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -216,6 +212,131 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function saveIncomeToFirebase(income) {
-  console.log("Saving income to Firebase:", income);
-}
+
+// Monthly expenses integration
+
+import { 
+  addExpense, 
+  getMonthlyExpenses, 
+  getMonthlyTotal 
+} from './firebase-expenses.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+  const expenseForm = document.querySelector('.expense-form');
+  const totalExpenseDisplay = document.getElementById('totalExpense');
+  const monthSelect = document.getElementById('monthSelect');
+  const yearSelect = document.getElementById('yearSelect');
+  
+  // Initialize year dropdown
+  const currentYear = new Date().getFullYear();
+  for (let year = currentYear; year >= currentYear - 5; year--) {
+      const option = document.createElement('option');
+      option.value = year;
+      option.textContent = year;
+      yearSelect.appendChild(option);
+  }
+
+  // Set default month and year for filters
+  const currentDate = new Date();
+  monthSelect.value = currentDate.getMonth();
+  yearSelect.value = currentDate.getFullYear();
+
+  // Update expense display when filter changes
+  monthSelect.addEventListener('change', updateExpenseDisplay);
+  yearSelect.addEventListener('change', updateExpenseDisplay);
+
+  async function updateExpenseDisplay() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const selectedMonth = parseInt(monthSelect.value);
+      const selectedYear = parseInt(yearSelect.value);
+
+      try {
+          // Update total expenses for selected month
+          const monthlyTotal = await getMonthlyTotal(user.uid, selectedMonth, selectedYear);
+          totalExpenseDisplay.textContent = '₹' + monthlyTotal.toLocaleString('en-IN');
+
+          // Get and display all expenses for selected month
+          const expenses = await getMonthlyExpenses(user.uid, selectedMonth, selectedYear);
+          displayExpenses(expenses);
+      } catch (error) {
+          console.error('Error updating expense display:', error);
+      }
+  }
+
+  function displayExpenses(expenses) {
+      const expenseList = document.getElementById('expenseList');
+      if (!expenseList) return;
+
+      expenseList.innerHTML = '';
+      
+      expenses.forEach(expense => {
+          const expenseElement = document.createElement('div');
+          expenseElement.className = 'expense-item';
+          expenseElement.innerHTML = `
+              <div class="expense-details">
+                  <span class="expense-category">${expense.category}</span>
+                  <span class="expense-description">${expense.description}</span>
+                  <span class="expense-amount">₹${expense.amount.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="expense-date">
+                  ${expense.timestamp.toDate().toLocaleDateString()}
+              </div>
+          `;
+          expenseList.appendChild(expenseElement);
+      });
+  }
+
+  // Handle form submission
+  expenseForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const user = auth.currentUser;
+      if (!user) {
+          alert('Please sign in to add expenses');
+          return;
+      }
+
+      const amount = document.getElementById('amount').value;
+      const category = document.getElementById('category').value;
+      const description = document.getElementById('description').value;
+
+      if (!amount || !category) {
+          alert('Please fill in all required fields');
+          return;
+      }
+
+      try {
+          const expenseData = {
+              amount,
+              category,
+              description
+          };
+
+          await addExpense(user.uid, expenseData);
+          
+          // Update the display for the currently selected month/year
+          await updateExpenseDisplay();
+          
+          // Reset form
+          expenseForm.reset();
+          alert('Expense added successfully!');
+      } catch (error) {
+          console.error('Error adding expense:', error);
+          alert('Error adding expense. Please try again.');
+      }
+  });
+
+  // Update expenses when user logs in
+  onAuthStateChanged(auth, (user) => {
+      if (user) {
+          updateExpenseDisplay();
+      } else {
+          totalExpenseDisplay.textContent = '₹0';
+          if (document.getElementById('expenseList')) {
+              document.getElementById('expenseList').innerHTML = '';
+          }
+      }
+  });
+});
