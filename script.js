@@ -69,7 +69,8 @@ onAuthStateChanged(auth, async (user) => {
     totalIncomeDisplay.textContent = "₹" + income.toLocaleString("en-IN");
   } else {
     console.log("User is signed out");
-    authbtn.classList.remove("hidden");``
+    authbtn.classList.remove("hidden");
+    ``;
     profileMenu.classList.add("hidden");
     totalIncomeDisplay.textContent = "₹0";
   }
@@ -82,7 +83,7 @@ profileMenu.addEventListener("click", () => {
 logoutBtn.addEventListener("click", async () => {
   await signOut(auth);
   console.log("User logged out");
-  profileDropdown.classList.add("hidden"); 
+  profileDropdown.classList.add("hidden");
 });
 
 const incomeForm = document.getElementById("incomeForm");
@@ -212,25 +213,35 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // Monthly expenses integration
 
-import { 
-  addExpense, 
-  getMonthlyExpenses, 
-  getMonthlyTotal 
-} from './firebase-expenses.js';
+import {
+  addExpense,
+  getMonthlyExpenses,
+  getMonthlyTotal,
+  deleteExpense,
+} from "./firebase-expenses.js";
 
-document.addEventListener('DOMContentLoaded', function() {
-  const expenseForm = document.querySelector('.expense-form');
-  const totalExpenseDisplay = document.getElementById('totalExpense');
-  const monthSelect = document.getElementById('monthSelect');
-  const yearSelect = document.getElementById('yearSelect');
-  
+document.addEventListener("DOMContentLoaded", function () {
+  const expenseForm = document.querySelector(".expense-form");
+  const totalExpenseDisplay = document.getElementById("totalExpense");
+  const monthSelect = document.getElementById("monthSelect");
+  const yearSelect = document.getElementById("yearSelect");
+
   // Initialize month dropdown
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   months.forEach((month, index) => {
@@ -243,10 +254,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize year dropdown
   const currentYear = new Date().getFullYear();
   for (let year = currentYear; year >= currentYear - 5; year--) {
-      const option = document.createElement('option');
-      option.value = year;
-      option.textContent = year;
-      yearSelect.appendChild(option);
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    yearSelect.appendChild(option);
   }
 
   // Set default month and year for filters
@@ -255,101 +266,133 @@ document.addEventListener('DOMContentLoaded', function() {
   yearSelect.value = currentDate.getFullYear();
 
   // Update expense display when filter changes
-  monthSelect.addEventListener('change', updateExpenseDisplay);
-  yearSelect.addEventListener('change', updateExpenseDisplay);
+  monthSelect.addEventListener("change", updateExpenseDisplay);
+  yearSelect.addEventListener("change", updateExpenseDisplay);
 
   async function updateExpenseDisplay() {
-      const user = auth.currentUser;
-      if (!user) return;
+    const user = auth.currentUser;
+    if (!user) return;
 
-      const selectedMonth = parseInt(monthSelect.value);
-      const selectedYear = parseInt(yearSelect.value);
+    const selectedMonth = parseInt(monthSelect.value);
+    const selectedYear = parseInt(yearSelect.value);
 
-      try {
-          // Update total expenses for selected month
-          const monthlyTotal = await getMonthlyTotal(user.uid, selectedMonth, selectedYear);
-          totalExpenseDisplay.textContent = '₹' + monthlyTotal.toLocaleString('en-IN');
+    try {
+      // Update total expenses for selected month
+      const monthlyTotal = await getMonthlyTotal(
+        user.uid,
+        selectedMonth,
+        selectedYear
+      );
+      totalExpenseDisplay.textContent =
+        "₹" + monthlyTotal.toLocaleString("en-IN");
 
-          // Get and display all expenses for selected month
-          const expenses = await getMonthlyExpenses(user.uid, selectedMonth, selectedYear);
-          displayExpenses(expenses);
-      } catch (error) {
-          console.error('Error updating expense display:', error);
-      }
+      // Get and display all expenses for selected month
+      const expenses = await getMonthlyExpenses(
+        user.uid,
+        selectedMonth,
+        selectedYear
+      );
+      displayExpenses(expenses);
+    } catch (error) {
+      console.error("Error updating expense display:", error);
+    }
   }
 
   function displayExpenses(expenses) {
-      const expenseList = document.getElementById('expenseList');
-      if (!expenseList) return;
+    const expenseList = document.getElementById("expenseList");
+    if (!expenseList) return;
 
-      expenseList.innerHTML = '';
-      
-      expenses.forEach(expense => {
-          const expenseElement = document.createElement('div');
-          expenseElement.className = 'expense-item';
-          expenseElement.innerHTML = `
+    expenseList.innerHTML = "";
+
+    expenses.forEach((expense) => {
+      const expenseElement = document.createElement("div");
+      expenseElement.className = "expense-item";
+      expenseElement.innerHTML = `
               <div class="expense-details">
                   <span class="expense-category">${expense.category}</span>
-                  <span class="expense-description">${expense.description}</span>
-                  <span class="expense-amount">₹${expense.amount.toLocaleString('en-IN')}</span>
+                  <span class="expense-description">${
+                    expense.description
+                  }</span>
+                  <span class="expense-amount">₹${expense.amount.toLocaleString(
+                    "en-IN"
+                  )}</span>
               </div>
-              <div class="expense-date">
-                  ${expense.timestamp.toDate().toLocaleDateString()}
-              </div>
+              <div class="expense-actions">
+                <span class="expense-date">
+                    ${expense.timestamp.toDate().toLocaleDateString()}
+                </span>
+                <button class="delete-expense" data-id="${expense.id}">
+                    <span class="delete-icon">🗑️</span>
+                </button>
+            </div>
           `;
-          expenseList.appendChild(expenseElement);
+      // Add delete event listener
+      const deleteBtn = expenseElement.querySelector(".delete-expense");
+      deleteBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (confirm("Are you sure you want to delete this expense?")) {
+          try {
+            await deleteExpense(expense.id);
+            await updateExpenseDisplay(); // Refresh the list
+          } catch (error) {
+            console.error("Error deleting expense:", error);
+            alert("Error deleting expense. Please try again.");
+          }
+        }
       });
+      expenseList.appendChild(expenseElement);
+    });
   }
 
   // Handle form submission
-  expenseForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const user = auth.currentUser;
-      if (!user) {
-          alert('Please sign in to add expenses');
-          return;
-      }
+  expenseForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      const amount = document.getElementById('amount').value;
-      const category = document.getElementById('category').value;
-      const description = document.getElementById('description').value;
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please sign in to add expenses");
+      return;
+    }
 
-      if (!amount || !category) {
-          alert('Please fill in all required fields');
-          return;
-      }
+    const amount = document.getElementById("amount").value;
+    const category = document.getElementById("category").value;
+    const description = document.getElementById("description").value;
 
-      try {
-          const expenseData = {
-              amount,
-              category,
-              description
-          };
+    if (!amount || !category) {
+      alert("Please fill in all required fields");
+      return;
+    }
 
-          await addExpense(user.uid, expenseData);
-          
-          // Update the display for the currently selected month/year
-          await updateExpenseDisplay();
-          
-          // Reset form
-          expenseForm.reset();
-          alert('Expense added successfully!');
-      } catch (error) {
-          console.error('Error adding expense:', error);
-          alert('Error adding expense. Please try again.');
-      }
+    try {
+      const expenseData = {
+        amount,
+        category,
+        description,
+      };
+
+      await addExpense(user.uid, expenseData);
+
+      // Update the display for the currently selected month/year
+      await updateExpenseDisplay();
+
+      // Reset form
+      expenseForm.reset();
+      alert("Expense added successfully!");
+    } catch (error) {
+      console.error("Error adding expense:", error);
+      alert("Error adding expense. Please try again.");
+    }
   });
 
   // Update expenses when user logs in
   onAuthStateChanged(auth, (user) => {
-      if (user) {
-          updateExpenseDisplay();
-      } else {
-          totalExpenseDisplay.textContent = '₹0';
-          if (document.getElementById('expenseList')) {
-              document.getElementById('expenseList').innerHTML = '';
-          }
+    if (user) {
+      updateExpenseDisplay();
+    } else {
+      totalExpenseDisplay.textContent = "₹0";
+      if (document.getElementById("expenseList")) {
+        document.getElementById("expenseList").innerHTML = "";
       }
+    }
   });
 });

@@ -5,6 +5,8 @@ import {
     query,
     where,
     getDocs,
+    deleteDoc,
+    doc,
     Timestamp 
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
@@ -20,7 +22,6 @@ async function addExpense(userId, expenseData) {
             description: expenseData.description,
             userId: userId,
             timestamp: Timestamp.fromDate(now),
-            // Extract month and year from current date
             month: now.getMonth(),
             year: now.getFullYear()
         };
@@ -30,6 +31,19 @@ async function addExpense(userId, expenseData) {
         return docRef.id;
     } catch (error) {
         console.error("Error adding expense:", error);
+        throw error;
+    }
+}
+
+// New function to delete an expense
+async function deleteExpense(expenseId) {
+    try {
+        const expenseRef = doc(db, "expenses", expenseId);
+        await deleteDoc(expenseRef);
+        console.log("Expense deleted successfully:", expenseId);
+        return true;
+    } catch (error) {
+        console.error("Error deleting expense:", error);
         throw error;
     }
 }
@@ -56,7 +70,6 @@ async function getMonthlyExpenses(userId, month, year) {
             });
         });
 
-        // Sort expenses by timestamp locally
         expenses.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
 
         return expenses;
@@ -94,6 +107,7 @@ async function getMonthlyTotal(userId, month, year) {
 
 export {
     addExpense,
+    deleteExpense,
     getMonthlyExpenses,
     getMonthlyExpensesByCategory,
     getMonthlyTotal
