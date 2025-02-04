@@ -572,4 +572,21 @@ input, select, textarea {
     #signupBtn {
         font-size: 0.7rem;
     }
+
+    .expense-date {
+        font-size: 0.75rem;
+
+    }
+
+    .expense-category {
+        font-size: 0.75rem;
+    }
+
+    .expense-description {
+        font-size: 0.75rem;
+    }
+
+    .expense-amount {
+        font-size: 0.75rem;
+    }
 }
