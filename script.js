@@ -69,9 +69,6 @@ const totalExpenseDisplay = document.getElementById("totalExpense");
 const monthSelect = document.getElementById("monthSelect");
 const yearSelect = document.getElementById("yearSelect");
 
-
-
-
 // AI Chat Elements
 const aiAssistantBtn = document.getElementById("aiAssistant");
 const popup = document.getElementById("aiPopup");
@@ -187,7 +184,10 @@ saveIncomeBtn.addEventListener("click", async (e) => {
     totalIncomeDisplay.textContent = "₹" + newIncome.toLocaleString("en-IN");
 
     incomePopup.classList.remove("active");
+  } else if (!user) {
+    alert("Please sign in to update income");
   } else {
+    console.log(user);
     console.error("Invalid income value or no user signed in");
   }
 });
@@ -375,26 +375,77 @@ userInput.addEventListener("keypress", (e) => {
   }
 });
 
-function sendMessage() {
+async function sendMessage() {
   const message = userInput.value.trim();
+  if (!message) return;
+
   if (message) {
     addMessage(message, "user");
-
     userInput.value = "";
+    sendButton.disabled = true;
 
-    setTimeout(() => {
+    try {
+      const response = await callAPI(message);
+      addMessage(response, "bot");
+    } catch (error) {
+      console.error("Error:", error);
       addMessage(
-        "I'm your AI assistant. I'll help you analyze your expenses. This is a placeholder response - you'll need to implement the Gemini API integration here.",
-        "ai"
+        "Sorry, there was an error processing your request. Please try again.",
+        "bot"
       );
-    }, 1000);
+    } finally {
+      sendButton.disabled = false;
+    }
   }
 }
 
 function addMessage(text, sender) {
   const messageDiv = document.createElement("div");
   messageDiv.classList.add("message", `${sender}-message`);
-  messageDiv.textContent = text;
+  messageDiv.innerHTML = text;
   chatMessages.appendChild(messageDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function callAPI(message) {
+  const response = await fetch(`${CONFIG.API_URL}?key=${CONFIG.API_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: CONFIG.SYSTEM_INSTRUCTION,
+              },
+              {
+                text: message,
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.95,
+          topK: 64,
+          maxOutputTokens: 65536,
+          responseMimeType: "text/plain",
+        },
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    if (response.status === 429) {
+      alert("API request limit reached. Please try again later.");
+      throw new Error("API request limit reached");
+    }
+    throw new Error("API request failed");
+  }
+
+  const data = await response.json();
+  return marked.parse(data.candidates[0].content.parts[0].text);
 }
