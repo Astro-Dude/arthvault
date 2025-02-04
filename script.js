@@ -72,7 +72,7 @@ const yearSelect = document.getElementById("yearSelect");
 // AI Chat Elements
 const aiAssistantBtn = document.getElementById("aiAssistant");
 const popup = document.getElementById("aiPopup");
-const closeButton = document.querySelector(".close-popup");
+const closeButton = document.querySelector("#closeAiAssistant");
 const chatMessages = document.getElementById("chatMessages");
 const userInput = document.getElementById("userInput");
 const sendButton = document.querySelector(".send-message");

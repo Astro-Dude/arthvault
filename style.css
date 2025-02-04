@@ -211,7 +211,7 @@ body {
 /* Form Styles
 ----------------------------------------*/
 .popup-body {
-    padding: 1.5rem;
+    padding: 0.5rem;
 }
 
 #incomeForm {
@@ -287,11 +287,13 @@ body {
 }
 
 .expense-description {
+    padding: 1rem 0.35rem;
     color: #6b7280;
 }
 
 .expense-amount {
     font-weight: 600;
+    padding: 1rem 0.35rem;
 }
 
 .expense-date {
@@ -394,12 +396,12 @@ input, select, textarea {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    background-color: rgba(37, 99, 235, 0.4);
+    background-color: rgba(76, 123, 226, 0.8);
     color: var(--background-color);
 }
 
 .ai-assistant:hover {
-    background-color: rgba(37, 99, 235, 0.8);
+    background-color: rgba(37, 99, 235, 1);
     color: var(--background-color);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -436,7 +438,7 @@ input, select, textarea {
 }
 
 .popup-header {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
     justify-content: space-between;
@@ -588,5 +590,13 @@ input, select, textarea {
 
     .expense-amount {
         font-size: 0.75rem;
+    }
+
+    .message {
+        font-size: 0.7rem;
+    }
+
+    #userInput {
+        font-size: 0.7rem;
     }
 }
