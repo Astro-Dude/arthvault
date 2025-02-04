@@ -420,7 +420,7 @@ input, select, textarea {
 }
 
 .popup-header {
-    padding: 1rem;
+    padding: 0.5rem;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
     justify-content: space-between;
@@ -450,7 +450,7 @@ input, select, textarea {
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 50vh;
+    height: 65vh;
 }
 
 .chat-messages {
@@ -464,6 +464,7 @@ input, select, textarea {
 
 .chat-input {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     padding: 1rem;
     border-top: 1px solid #e5e7eb;
@@ -473,6 +474,10 @@ input, select, textarea {
     flex-grow: 1;
     resize: none;
     padding: 0.5rem;
+}
+
+.chat-input button {
+    padding: 1rem 0rem;
 }
 
 .message {
@@ -487,8 +492,9 @@ input, select, textarea {
     align-self: flex-end;
 }
 
-.ai-message {
-    background-color: #f3f4f6;
+.bot-message {
+    background-color: #f3f4f6c1;
+    padding-left: 1.4rem;
     align-self: flex-start;
 }
 
@@ -515,5 +521,39 @@ input, select, textarea {
     
     .summary-section {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    #logo {
+        height: 2.5rem;
+    }
+}
+
+@media (max-width: 420px) {
+    #logo {
+        height: 2rem;
+    }
+
+    #loginBtn {
+        font-size: 0.75rem;
+    }
+
+    #signupBtn {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 360px) {
+    #logo {
+        height: 1.75rem;
+    }
+
+    #loginBtn {
+        font-size: 0.7rem;
+    }
+
+    #signupBtn {
+        font-size: 0.7rem;
     }
 }
