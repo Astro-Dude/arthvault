@@ -53,11 +53,13 @@ body {
 }
 
 .btn-primary {
+    padding: 0.5rem 1rem;
     background-color: var(--primary-color);
     color: white;
 }
 
 .btn-outline {
+    padding: 0.5rem 1rem;
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
     background-color: transparent;
@@ -365,6 +367,10 @@ body {
     gap: 1rem;
 }
 
+.expense-form button {
+    padding: 0.8rem 0;
+}
+
 /* Form Elements
 ----------------------------------------*/
 input, select, textarea {
@@ -384,9 +390,19 @@ input, select, textarea {
 /* AI Assistant
 ----------------------------------------*/
 .ai-assistant {
+    padding: 0.8rem 1rem;
     position: fixed;
     bottom: 2rem;
     right: 2rem;
+    background-color: rgba(37, 99, 235, 0.4);
+    color: var(--background-color);
+}
+
+.ai-assistant:hover {
+    background-color: rgba(37, 99, 235, 0.8);
+    color: var(--background-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 /* Popup Styles
