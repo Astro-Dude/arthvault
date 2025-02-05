@@ -381,6 +381,11 @@ expenseForm.addEventListener("submit", async (e) => {
     return;
   }
 
+  if (amount <= 0) {
+    alert("Please enter a valid amount");
+    return;
+  }
+
   try {
     const expenseData = {
       amount,
