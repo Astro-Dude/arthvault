@@ -21,6 +21,7 @@ import {
   getMonthlyExpenses,
   getMonthlyTotal,
   deleteExpense,
+  getMonthlyExpensesByCategory,
 } from "./firebase-expenses.js";
 
 // Initialize Firebase
@@ -77,6 +78,9 @@ const chatMessages = document.getElementById("chatMessages");
 const userInput = document.getElementById("userInput");
 const sendButton = document.querySelector(".send-message");
 
+// Pie Chart Elements
+const pieChart = document.getElementById("pieChart");
+
 // User Sign In/Sign Out
 
 const userSignIn = async () => {
@@ -106,6 +110,16 @@ onAuthStateChanged(auth, async (user) => {
     const income = await getUserIncome(user.uid);
     console.log("User income:", income);
     totalIncomeDisplay.textContent = "₹" + income.toLocaleString("en-IN");
+
+    const selectedMonth = parseInt(monthSelect.value);
+    const selectedYear = parseInt(yearSelect.value);
+    const categoryExpense = await getMonthlyExpensesByCategory(
+      user.uid,
+      selectedMonth,
+      selectedYear
+    );
+    console.log("Category expenses:", categoryExpense);
+    renderPieChart(categoryExpense);
   } else {
     console.log("User is signed out");
     authButtons.classList.remove("hidden");
@@ -248,6 +262,15 @@ async function updateExpenseDisplay() {
       selectedYear
     );
     displayExpenses(expenses);
+
+    // Get and display expenses by category
+    const categoryExpense = await getMonthlyExpensesByCategory(
+      user.uid,
+      selectedMonth,
+      selectedYear
+    );
+    console.log("Category expenses:", categoryExpense);
+    renderPieChart(categoryExpense);
   } catch (error) {
     console.error("Error updating expense display:", error);
   }
@@ -296,6 +319,46 @@ function displayExpenses(expenses) {
       }
     });
     expenseList.appendChild(expenseElement);
+  });
+}
+
+// Render and update the pie chart
+let pieChartInstance;
+
+function renderPieChart(data) {
+  const colors = [
+    "#FF6384", // Food
+    "#36A2EB", // Transport
+    "#FFCE56", // Entertainment
+    "#4BC0C0", // Utilities
+    "#9966FF", // Others
+    "#CCCCCC"  // None
+  ];
+
+  if (!auth.currentUser || Object.keys(data).length === 0) {
+    data["None"] = 1;
+  }
+
+  // Destroy existing chart instance if it exists
+  if (pieChartInstance) {
+    pieChartInstance.destroy();
+  }
+
+  // Create new chart instance
+  pieChartInstance = new Chart(pieChart, {
+    type: "pie",
+    data: {
+      labels: Object.keys(data),
+      datasets: [
+        {
+          data: Object.values(data),
+          backgroundColor: (!auth.currentUser || Object.keys(data)[0]==='None') ? ["#CCC"] : colors,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+    },
   });
 }
 
@@ -348,6 +411,7 @@ onAuthStateChanged(auth, (user) => {
     if (document.getElementById("expenseList")) {
       document.getElementById("expenseList").innerHTML = "";
     }
+    renderPieChart({});
   }
 });
 
@@ -408,35 +472,33 @@ function addMessage(text, sender) {
 }
 
 async function callAPI(message) {
-  const response = await fetch(`${CONFIG.API_URL}?key=${CONFIG.API_KEY}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: CONFIG.SYSTEM_INSTRUCTION,
-              },
-              {
-                text: message,
-              },
-            ],
-          },
-        ],
-        generationConfig: {
-          temperature: 0.7,
-          topP: 0.95,
-          topK: 64,
-          maxOutputTokens: 65536,
-          responseMimeType: "text/plain",
+  const response = await fetch(`${CONFIG.API_URL}?key=${CONFIG.API_KEY}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [
+            {
+              text: CONFIG.SYSTEM_INSTRUCTION,
+            },
+            {
+              text: message,
+            },
+          ],
         },
-      }),
-    }
-  );
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 65536,
+        responseMimeType: "text/plain",
+      },
+    }),
+  });
 
   if (!response.ok) {
     if (response.status === 429) {

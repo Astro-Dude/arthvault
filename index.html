@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ArthVault - Smart Expense Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -125,8 +126,9 @@
         <!-- Expense Categories Pie Chart -->
         <div class="card">
           <h2>Expense Categories</h2>
-          <div class="chart-container" id="categoryPieChart"></div>
-          <div id="chartLegend"></div>
+          <div class="chart-container" id="categoryPieChart">
+            <canvas id="pieChart"></canvas>
+          </div>
         </div>
       </div>
 
