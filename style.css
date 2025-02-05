@@ -576,20 +576,19 @@ input, select, textarea {
     }
 
     .expense-date {
-        font-size: 0.75rem;
-
+        font-size: 0.8rem;
     }
 
     .expense-category {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
 
     .expense-description {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
 
     .expense-amount {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
 
     .message {
